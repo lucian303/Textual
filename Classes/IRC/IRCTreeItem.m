@@ -44,16 +44,6 @@
 		   andClient:(IRCClient *)u
 {
 	[self.log clear];
-	
-	[self.log.view close];
-	
-	self.log = nil;
-	self.log = [world createLogWithClient:u channel:c];
-	
-	world.logBase.contentView = world.dummyLog.view;
-	[world.dummyLog notifyDidBecomeVisible];
-	
-	world.logBase.contentView = [self.log view];
 	[self.log notifyDidBecomeVisible];
 }
 
