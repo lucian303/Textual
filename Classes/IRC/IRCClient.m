@@ -2301,6 +2301,8 @@ static NSDateFormatter *dateTimeFormatter = nil;
 		}
 		case 5011: // Command: CLEARALL
 		{
+			[self.world.messageOperationQueue setSuspended:YES];
+
 			if ([TPCPreferences clearAllOnlyOnActiveServer]) {
 				[self.world clearContentsOfClient:self];
 
@@ -2318,6 +2320,8 @@ static NSDateFormatter *dateTimeFormatter = nil;
 			} else {
 				[self.world destroyAllEvidence];
 			}
+
+			[self.world.messageOperationQueue setSuspended:NO];
 
 			return YES;
 			break;
@@ -5499,12 +5503,7 @@ static NSDateFormatter *dateTimeFormatter = nil;
     }
 
 	[self send:IRCPrivateCommandIndex("nick"), self.sentNick, nil];
-
-	if (self.config.bouncerMode) { // Fuck psybnc — use ZNC
-		[self send:IRCPrivateCommandIndex("user"), user, [NSString stringWithDouble:modeParam], @"*", [@":" stringByAppendingString:realName], nil];
-	} else {
-		[self send:IRCPrivateCommandIndex("user"), user, [NSString stringWithDouble:modeParam], @"*", realName, nil];
-	}
+	[self send:IRCPrivateCommandIndex("user"), user, [NSString stringWithDouble:modeParam], @"*", realName, nil];
 
 	[self.world reloadTree];
 }
