@@ -37,8 +37,6 @@
 
 #import "TextualApplication.h"
 
-#define _bottomEpsilon					0
-
 @interface TVCLogController ()
 @property (nonatomic, strong) TLOFileLogger *logFile;
 @end
@@ -339,7 +337,7 @@
 
 		if (viewHeight == 0) return YES;
 
-		return ((top + viewHeight) >= (height - _bottomEpsilon));
+		return ((top + viewHeight) >= height);
 	}
 
 	return NO;
@@ -815,8 +813,11 @@
 		NSMutableDictionary *outputDictionary = [NSMutableDictionary dictionary];
 
 		if (NSObjectIsNotEmpty(line.keywords)) {
-			inputDictionary[@"keywords"]	= line.keywords;
-			inputDictionary[@"nick"]		= line.nick;
+			inputDictionary[@"keywords"] = line.keywords;
+
+			if (NSObjectIsNotEmpty(line.nick)) {
+				inputDictionary[@"nick"] = line.nick;
+			}
 		}
 
 		if (NSObjectIsNotEmpty(line.excludeWords)) {

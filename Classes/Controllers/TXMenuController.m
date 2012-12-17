@@ -691,6 +691,7 @@
 	[sel.log unmark];
 	[sel.log mark];
 }
+
 - (void)gotoScrollbackMarker:(id)sender
 {
 	IRCTreeItem *sel = self.world.selected;
@@ -1660,7 +1661,6 @@
 		case 105: [_NSWorkspace() openURL:[NSURL URLWithString:@"https://wiki.github.com/codeux/Textual/memory-management"]]; break;
 		case 106: [_NSWorkspace() openURL:[NSURL URLWithString:@"https://wiki.github.com/codeux/Textual/styles"]]; break;
 		case 108: [_NSWorkspace() openURL:[NSURL URLWithString:@"https://wiki.github.com/codeux/Textual/feature-requests"]]; break;
-		case 110: [_NSWorkspace() openURL:[NSURL URLWithString:@"http://www.codeux.com/textual/forum/"]]; break;
 	}
 }
 
@@ -1787,6 +1787,27 @@
         
         [sender setState:NSOnState];
     }
+}
+
+- (void)loadExtensionsIntoMemory:(id)sender
+{
+	[NSBundle.invokeInBackgroundThread loadBundlesIntoMemory:self.world];
+}
+
+- (void)unloadExtensionsFromMemory:(id)sender
+{
+	[NSBundle.invokeInBackgroundThread deallocBundlesFromMemory:self.world];
+}
+
+- (void)resetDoNotAskMePopupWarnings:(id)sender
+{
+	NSDictionary *allSettings =	[_NSUserDefaults() dictionaryRepresentation];
+
+	for (NSString *key in allSettings) {
+		if ([key hasPrefix:TXPopupPromptSuppressionPrefix]) {
+			[_NSUserDefaults() setBool:NO forKey:key];
+		}
+	}
 }
 
 - (void)onNextHighlight:(id)sender

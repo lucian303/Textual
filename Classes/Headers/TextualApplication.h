@@ -148,7 +148,6 @@
 	#import "GRMustacheTemplateRepository.h"
 	#import "GRMustacheVersion.h"
 	#import "GRMustache.h"
-	#import "GTMBase64.h"
 	#import "GTMDefines.h"
 	#import "GTMGarbageCollection.h"
 	#import "GTMEncodeHTML.h"
